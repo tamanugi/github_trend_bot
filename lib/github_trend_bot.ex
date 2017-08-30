@@ -17,20 +17,24 @@ defmodule GithubTrendBot do
   def process_attachment([h|t], acc \\ []) do
     {repo_name, repo_link, description, language, language_color,  total_stars, today_stars} = h
 
-    attachment = %{
+    _attachment = %{
       color: language_color,
       title: repo_name,
       title_link: repo_link,
       text: description,
       fields: [
         %{
-          value: ":memo: #{language}"
-        },
-        %{
           value: ":star: #{total_stars} / #{today_stars}"
         }
       ]
     }
+
+    attachment = case language do
+                   "" -> _attachment
+                   _  ->
+                     language_field = %{value: ":memo: #{language}"}
+                     %{_attachment | fields: [language_field | _attachment.fields]}
+                end
 
     process_attachment(t, [attachment | acc ])
   end
