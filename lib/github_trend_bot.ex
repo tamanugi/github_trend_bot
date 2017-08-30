@@ -3,16 +3,35 @@ defmodule GithubTrendBot do
   Documentation for GithubTrendBot.
   """
 
-  @doc """
-  Hello world.
+  def post_trend do
+    attachments = GithubTrendBot.Trending.today_trending
+    |> process_attachment
+    |> Poison.encode!
 
-  ## Examples
+    #Slack.Web.Chat.post_message("capture", "test")
+    Slack.Web.Chat.post_message("capture", "", %{attachments: attachments})
 
-      iex> GithubTrendBot.hello
-      :world
+  end
 
-  """
-  def hello do
-    :world
+  def process_attachment([], acc), do: acc
+  def process_attachment([h|t], acc \\ []) do
+    {repo_name, repo_link, description, language, total_stars, today_stars} = h
+
+    attachment = %{
+      color: "#36a64f",
+      title: repo_name,
+      title_link: repo_link,
+      text: description,
+      fields: [
+        %{
+          value: ":memo: #{language}"
+        },
+        %{
+          value: ":star: #{total_stars} / #{today_stars}"
+        }
+      ]
+    }
+
+    process_attachment(t, [attachment | acc ])
   end
 end
