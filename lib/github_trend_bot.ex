@@ -15,10 +15,10 @@ defmodule GithubTrendBot do
 
   def process_attachment([], acc), do: acc
   def process_attachment([h|t], acc \\ []) do
-    {repo_name, repo_link, description, language, total_stars, today_stars} = h
+    {repo_name, repo_link, description, language, language_color,  total_stars, today_stars} = h
 
     attachment = %{
-      color: "#36a64f",
+      color: language_color,
       title: repo_name,
       title_link: repo_link,
       text: description,

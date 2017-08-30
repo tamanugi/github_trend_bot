@@ -31,6 +31,11 @@ defmodule GithubTrendBot.Trending do
     |> Floki.text
     |> String.trim
 
+    language_color = pa
+    |> Floki.find(".repo-language-color")
+    |> Floki.attribute("style")
+    |> extract_language_color
+
     total_stars = pa
     |> Floki.find("a[href$=stargazers]")
     |> Floki.text
@@ -41,7 +46,7 @@ defmodule GithubTrendBot.Trending do
     |> Enum.map(fn e -> e |> Floki.text |> String.trim end)
     |> filter_today_stars
 
-    {repo_name, @github_url <> repo_link, description, language, total_stars, today_stars}
+    {repo_name, @github_url <> repo_link, description, language, language_color, total_stars, today_stars}
 
   end
 
@@ -51,6 +56,11 @@ defmodule GithubTrendBot.Trending do
       _ -> filter_today_stars(t)
     end
   end
-
   defp filter_today_stars(_), do: ""
+
+  defp extract_language_color(["background-color:" <> color]) do
+    color
+    |> String.trim(";")
+  end
+  defp extract_language_color(_), do: "#36a64f"
 end
