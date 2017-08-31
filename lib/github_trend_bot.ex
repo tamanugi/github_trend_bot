@@ -8,8 +8,9 @@ defmodule GithubTrendBot do
     |> process_attachment
     |> Poison.encode!
 
-    #Slack.Web.Chat.post_message("capture", "test")
-    Slack.Web.Chat.post_message("capture", "", %{attachments: attachments})
+    channel = Application.get_env(:slack, :channel, "")
+
+    Slack.Web.Chat.post_message(channel, "", %{attachments: attachments})
 
   end
 
