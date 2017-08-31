@@ -1,1 +1,0 @@
-k-yamada@MacBook-Pro.local.52206
