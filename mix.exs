@@ -15,7 +15,8 @@ defmodule GithubTrendBot.Mixfile do
   def application do
     [
       extra_applications: [:logger],
-      mod: {GithubTrendBot.Application, []}
+      mod: {GithubTrendBot.Application, []},
+      applications: [:quantum, :httpoison]
     ]
   end
 
@@ -25,7 +26,9 @@ defmodule GithubTrendBot.Mixfile do
       {:httpoison, "~> 0.13.0"},
       {:floki, "~> 0.18.0"},
       {:poison, "~> 3.1.0"},
-      {:slack, "~> 0.12.0"}
+      {:slack, "~> 0.12.0"},
+      {:quantum, "~> 2.1.0-beta.1"},
+      {:timex, "~> 3.0"}
     ]
   end
 end
