@@ -4,18 +4,19 @@ defmodule GithubTrendBot do
   """
 
   def post_trend do
-    attachments = GithubTrendBot.Trending.today_trending
-    |> process_attachment
-    |> Poison.encode!
+    attachments = 
+      GithubTrendBot.Trending.fetch_today_trending
+      |> process_attachment
+      |> Poison.encode!
 
     channel = Application.get_env(:slack, :channel, "")
 
-    Slack.Web.Chat.post_message(channel, "", %{attachments: attachments})
+    Slack.Web.Chat.post_message(channel, "", option(attachments))
 
   end
 
-  def process_attachment([], acc), do: acc
-  def process_attachment([h|t], acc \\ []) do
+  defp process_attachment([], acc), do: acc
+  defp process_attachment([h|t], acc \\ []) do
     {repo_name, repo_link, description, language, language_color,  total_stars, today_stars} = h
 
     _attachment = %{
@@ -39,4 +40,12 @@ defmodule GithubTrendBot do
 
     process_attachment(t, [attachment | acc ])
   end
+
+  defp option(attachments) do
+    case Application.get_env(:slack, :option) do
+      option when is_map(option) -> Map.merge(%{attachments: attachments}, option)
+      _ -> %{attachments: attachments}
+    end
+  end
+
 end
