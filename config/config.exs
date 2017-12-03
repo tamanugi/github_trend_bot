@@ -11,7 +11,7 @@ use Mix.Config
 #                        find more detailed information the https://api.slack.com/methods/chat.postMessage
 config :slack,
   api_token: "enter your app token",
-  channel: "enter channel name"
+  channel: "enter channel name",
   option: %{username: "GitHub Trend Bot"}
 
 # quantum config 
