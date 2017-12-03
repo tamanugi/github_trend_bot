@@ -3,7 +3,7 @@ defmodule GithubTrendBot.Trending do
   @github_url "https://github.com"
   @github_trend_url @github_url <> "/trending"
 
-  def today_trending do
+  def fetch_today_trending do
 
     %HTTPoison.Response{body: body} = HTTPoison.get! @github_trend_url
 
