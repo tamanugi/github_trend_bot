@@ -10,6 +10,7 @@ defmodule GithubTrendBot.Application do
     children = [
       # Starts a worker by calling: GithubTrendBot.Worker.start_link(arg)
       # {GithubTrendBot.Worker, arg},
+     {GithubTrendBot.Scheduler, []}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
